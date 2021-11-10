@@ -1,0 +1,58 @@
+{
+  "collectionName": "components_cabanas_cabanas",
+  "info": {
+    "name": "cabanas",
+    "icon": "home",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "nome": {
+      "type": "string",
+      "required": true
+    },
+    "tamanho": {
+      "type": "string"
+    },
+    "quartos": {
+      "type": "string",
+      "default": "quartos",
+      "required": true
+    },
+    "disponivel": {
+      "type": "boolean",
+      "default": true
+    },
+    "galeria": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": true,
+      "pluginOptions": {}
+    },
+    "foto": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": true,
+      "pluginOptions": {}
+    },
+    "cotas": {
+      "type": "component",
+      "repeatable": true,
+      "component": "cabanas.cotas",
+      "required": true
+    },
+    "valor_base": {
+      "type": "decimal",
+      "required": true
+    }
+  }
+}

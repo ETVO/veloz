@@ -1,0 +1,82 @@
+{
+  "kind": "collectionType",
+  "collectionName": "propostas",
+  "info": {
+    "name": "proposta",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "regime_casamento": {
+      "type": "enumeration",
+      "enum": [
+        "total",
+        "parcial",
+        "separado",
+        "participacao"
+      ],
+      "required": false
+    },
+    "estado_civil": {
+      "type": "enumeration",
+      "enum": [
+        "solteiro",
+        "casado",
+        "viuvo",
+        "separado",
+        "divorciado"
+      ],
+      "required": true
+    },
+    "endereco": {
+      "type": "string",
+      "required": true
+    },
+    "bairro": {
+      "type": "string",
+      "required": true
+    },
+    "cep": {
+      "type": "string",
+      "required": true,
+      "regex": "[0-9]{5}-[0-9]{3}"
+    },
+    "cidade": {
+      "type": "string",
+      "required": true
+    },
+    "telefone": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string",
+      "required": true
+    },
+    "info_conjuge": {
+      "type": "component",
+      "repeatable": false,
+      "component": "proposta.conjuge"
+    },
+    "info_comprador": {
+      "type": "component",
+      "repeatable": false,
+      "component": "proposta.conjuge"
+    },
+    "empreendimento": {
+      "model": "empreendimento",
+      "via": "propostas"
+    },
+    "autenticada": {
+      "type": "boolean"
+    },
+    "unidades": {
+      "type": "json"
+    }
+  }
+}

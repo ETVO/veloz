@@ -1,0 +1,54 @@
+{
+  "kind": "collectionType",
+  "collectionName": "empreendimento",
+  "info": {
+    "name": "empreendimento",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "nome": {
+      "type": "string",
+      "required": true
+    },
+    "endereco": {
+      "type": "string",
+      "required": true
+    },
+    "logo": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": true,
+      "pluginOptions": {}
+    },
+    "cover": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": true,
+      "pluginOptions": {}
+    },
+    "cabanas": {
+      "type": "component",
+      "repeatable": true,
+      "component": "cabanas.cabanas",
+      "required": true
+    },
+    "propostas": {
+      "via": "empreendimento",
+      "collection": "proposta"
+    }
+  }
+}

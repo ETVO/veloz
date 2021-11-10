@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_cabanas_cotas",
+  "info": {
+    "name": "cotas",
+    "icon": "scroll",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "valor": {
+      "type": "decimal",
+      "required": true
+    },
+    "data_inicio": {
+      "type": "string",
+      "required": true
+    },
+    "data_fim": {
+      "type": "string",
+      "required": true
+    },
+    "numero": {
+      "type": "integer",
+      "required": true,
+      "unique": false,
+      "min": 1
+    }
+  }
+}

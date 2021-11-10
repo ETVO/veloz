@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/propostas",
+      "handler": "proposta.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/propostas/count",
+      "handler": "proposta.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/propostas/:id",
+      "handler": "proposta.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/propostas",
+      "handler": "proposta.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/propostas/:id",
+      "handler": "proposta.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/propostas/:id",
+      "handler": "proposta.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

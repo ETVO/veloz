@@ -19,9 +19,9 @@
       "default": "quartos",
       "required": true
     },
-    "disponivel": {
+    "reservada": {
       "type": "boolean",
-      "default": true
+      "default": false
     },
     "galeria": {
       "collection": "file",
@@ -50,8 +50,12 @@
       "component": "cabanas.cotas",
       "required": true
     },
-    "valor_base": {
+    "valorBase": {
       "type": "decimal",
+      "required": true
+    },
+    "idMapa": {
+      "type": "string",
       "required": true
     }
   }

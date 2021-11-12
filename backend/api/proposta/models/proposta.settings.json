@@ -12,24 +12,24 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "regime_casamento": {
+    "regimeCasamento": {
       "type": "enumeration",
       "enum": [
-        "total",
-        "parcial",
-        "separado",
-        "participacao"
+        "Total",
+        "Parcial",
+        "Separado",
+        "Participacao"
       ],
       "required": false
     },
-    "estado_civil": {
+    "estadoCivil": {
       "type": "enumeration",
       "enum": [
-        "solteiro",
-        "casado",
-        "viuvo",
-        "separado",
-        "divorciado"
+        "Solteiro",
+        "Casado",
+        "Viuvo",
+        "Separado",
+        "Divorciado"
       ],
       "required": true
     },
@@ -58,19 +58,19 @@
       "type": "string",
       "required": true
     },
-    "info_conjuge": {
+    "infoConjuge": {
       "type": "component",
       "repeatable": false,
       "component": "proposta.conjuge"
     },
-    "info_comprador": {
+    "infoComprador": {
       "type": "component",
       "repeatable": false,
       "component": "proposta.conjuge"
     },
     "empreendimento": {
-      "model": "empreendimento",
-      "via": "propostas"
+      "via": "propostas",
+      "model": "empreendimento"
     },
     "autenticada": {
       "type": "boolean"

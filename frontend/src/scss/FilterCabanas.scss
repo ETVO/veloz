@@ -1,0 +1,27 @@
+.FilterCabanas {
+    position: relative;
+
+    color: #4C516F;
+
+    
+    .input {
+        background-color: #E5E7ED;
+        border-radius: 5px;
+        border: none;
+        color: inherit;
+    }
+
+    .btn {
+        position: absolute;
+        right: 0;
+        top: 0;
+        display: block;
+        height: 100%;
+        padding: 0 .75rem;
+
+        background: none;
+        border: none;
+        
+        color: inherit;
+    }
+}

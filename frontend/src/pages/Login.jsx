@@ -1,7 +1,19 @@
 import React, { useState } from 'react'
+import { Form, Button, Row, Col } from 'react-bootstrap'
+import { useQuery, gql } from '@apollo/client'
 
-// import CSS
-import '../css/Login.css'
+// import styling
+import '../scss/Login.scss'
+
+// Create login page query
+const LOGIN = gql`
+    query GetLogin {
+        login {
+            id,
+            imagem
+        }
+    }
+`
 
 async function loginUser(credentials) {
     const response = await fetch('http://localhost:1337/auth/local', {
@@ -14,16 +26,40 @@ async function loginUser(credentials) {
 
     const data = await response.json()
 
-    if(data.statusCode == 400){
+    if(data.statusCode === 400){
         return null
     }  
 
-    return data
-        
+    return data       
+}
+
+async function getLoginCover() {
+    const response = await fetch('http://localhost:1337/estaticas')
+
+    const data = await response.json()
+
+    if(data.statusCode === 400){
+        return null
+    }  
+
+    return data 
 }
 
 function Login({ setToken }) {
 
+    var [image, setImage] = useState();
+
+    try {
+        (async () => {
+            const loginData = await getLoginCover()
+        
+            setImage(loginData.coverLogin.url)
+        })()
+    } catch(err) {
+        
+    }
+
+    const [userInput, setUserInput] = useState()
     const [username, setUsername] = useState()
     const [password, setPassword] = useState()
     const [error, setError] = useState()
@@ -40,28 +76,55 @@ function Login({ setToken }) {
             setToken(token)
         }
         else {
-            setError('Incorrect password or username')
+            setError('Usuário ou senha incorretos')
+            userInput.focus()
         }
     }
 
     return (
-        <div className="login-wrapper">
-            <h1>Please Login</h1>
-            <small style={{color: 'red'}}>{error}</small>
-            <form onSubmit={handleSubmit}>
-                <label>
-                    <p>Username</p>
-                    <input type="text" onChange={e => setUsername(e.target.value)} />
-                </label>
-                <label>
-                    <p>Password</p>
-                    <input type="password" onChange={e => setPassword(e.target.value)} />
-                </label>
-                <div>
-                    <button type="submit">Submit</button>
-                </div>
-            </form>
+
+        <div className="Login">
+            <Row className='p-0 w-100'>
+                <Col lg='8' className="present p-0">
+                    <img className='cover-img d-block' src={'http://localhost:1337' + image} alt="" />
+                </Col>
+
+                <Col lg='4' className="form d-flex p-0">
+                    <div className="my-auto form-wrap">
+                        <small className="text-danger mb-3" >{error}</small>
+
+                        <h1 className='text-primary'>Login</h1>
+
+                        <Form onSubmit={handleSubmit}>
+                            <Form.Group className='mb-3' controlId='username'>
+                                <Form.Label>Usuário ou Email</Form.Label>
+                                <Form.Control type='text' ref={(input => { setUserInput(input) })} onChange={e => setUsername(e.target.value)} />
+                            </Form.Group>
+
+                            <Form.Group className='mb-3' controlId='password'>
+                                <Form.Label>Senha</Form.Label>
+                                <Form.Control type='password' onChange={e => setPassword(e.target.value)} />
+                            </Form.Group>
+
+                            <div className="d-flex">
+                                <div className="ms-auto">
+                                    {/* <a href='' className='text-primary forget'>
+                                        <small>
+                                            Esqueceu sua senha?
+                                        </small>
+                                    </a> */}
+                                    <Button className='submit' variant='primary' type='submit'>
+                                        logar
+                                    </Button>
+                                </div>
+                            </div>
+
+                        </Form>
+                    </div>
+                </Col>
+            </Row>
         </div>
+
     )
 }
 

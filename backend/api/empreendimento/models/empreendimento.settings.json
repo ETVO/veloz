@@ -49,6 +49,10 @@
     "propostas": {
       "via": "empreendimento",
       "collection": "proposta"
+    },
+    "areaCabana": {
+      "type": "string",
+      "required": true
     }
   }
 }

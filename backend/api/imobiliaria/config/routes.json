@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/imobiliarias",
+      "handler": "imobiliaria.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/imobiliarias/count",
+      "handler": "imobiliaria.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/imobiliarias/:id",
+      "handler": "imobiliaria.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/imobiliarias",
+      "handler": "imobiliaria.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/imobiliarias/:id",
+      "handler": "imobiliaria.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/imobiliarias/:id",
+      "handler": "imobiliaria.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

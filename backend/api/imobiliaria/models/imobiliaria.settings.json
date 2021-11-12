@@ -1,0 +1,44 @@
+{
+  "kind": "collectionType",
+  "collectionName": "imobiliarias",
+  "info": {
+    "name": "Imobiliária"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "nome": {
+      "type": "string",
+      "required": true
+    },
+    "cnpj": {
+      "type": "string",
+      "required": true
+    },
+    "endereco": {
+      "type": "string",
+      "required": true
+    },
+    "bairro": {
+      "type": "string",
+      "required": true
+    },
+    "cidade": {
+      "type": "string",
+      "required": true
+    },
+    "cep": {
+      "type": "string",
+      "required": true
+    },
+    "vendedores": {
+      "via": "imobiliaria",
+      "plugin": "users-permissions",
+      "collection": "user"
+    }
+  }
+}

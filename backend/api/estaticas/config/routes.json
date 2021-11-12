@@ -1,0 +1,28 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/estaticas",
+      "handler": "estaticas.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/estaticas",
+      "handler": "estaticas.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/estaticas",
+      "handler": "estaticas.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

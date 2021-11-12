@@ -1,0 +1,23 @@
+h1 {
+    font-weight: 400;
+}
+
+body,
+html {
+    height: 100%;
+    margin: 0;
+}
+
+#root {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+
+    .Header {
+        flex: 0 1 auto;
+    }
+
+    .App {
+        flex: 1 1 auto;
+    }
+}

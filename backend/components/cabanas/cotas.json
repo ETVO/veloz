@@ -11,11 +11,11 @@
       "type": "decimal",
       "required": true
     },
-    "data_inicio": {
+    "dataInicio": {
       "type": "string",
       "required": true
     },
-    "data_fim": {
+    "dataFim": {
       "type": "string",
       "required": true
     },
@@ -24,6 +24,10 @@
       "required": true,
       "unique": false,
       "min": 1
+    },
+    "disponivel": {
+      "type": "boolean",
+      "default": true
     }
   }
 }

@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
-import { Col, Row } from 'react-bootstrap'
+import { Col, Row, Toast } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import { useQuery, gql } from '@apollo/client'
+import { CabanaIcon, cycleCotas } from '../helpers/cabanas'
 
 import '../scss/Empreendimento.scss'
 
 import FilterCabanas from '../components/FilterCabanas'
+import ListCabanas from '../components/ListCabanas'
+import GalleryCabana from '../components/GalleryCabana'
 
 const EMPREENDIMENTO = gql`
     query GetEmpreendimento($id: ID!) {
@@ -20,6 +23,11 @@ const EMPREENDIMENTO = gql`
                 valorBase
                 reservada
                 foto {formats}
+                galeria {
+                    id
+                    url
+                    caption
+                }
                 cotas {
                     id
                     numero
@@ -30,82 +38,84 @@ const EMPREENDIMENTO = gql`
     } 
 `
 
-function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-}
-
-// returns true if available, false if sold out
-function cycleCotas(cabana) {
-    if(cabana.cotas) {
-        if(cabana.cotas.map(cota => {
-            if(cota.disponivel)
-                return true
-        })) {
-            return true
-        }
-        else {
-            return false
-        }
-    }
-}
-
 export default function Empreendimento() {
     const { id } = useParams()
-    
+
     const { loading, error, data } = useQuery(EMPREENDIMENTO, {
         variables: { id: id }
     })
 
     const [cabanas, setCabanas] = useState()
+    const [active, setActive] = useState()
+    const [toastShow, setToastShow] = useState(false)
+    const [toastText, setToastText] = useState('Empreendimento')
 
-    if(!cabanas && data)
-        setCabanas(data.empreendimento.cabanas)
+    if (data) {
+        if (!cabanas)
+            setCabanas(data.empreendimento.cabanas)
+    }
 
     if (loading) return <p>Carregando...</p>
     if (error) return <p>Ocorreu um erro ao carregar os empreendimentos.</p>
 
+    const showUnidade = uni => {
+        let disponivel = cycleCotas(uni)
+
+        if (uni.reservada) {
+            setToastShow(true)
+            setToastText('A unidade selecionada encontra-se reservada.')
+        }
+        else if (!disponivel) {
+            setToastShow(true)
+            setToastText('A unidade selecionada já foi vendida.')
+
+        }
+        else {
+            setActive(uni)
+        }
+    }
+
     return (
         <div className='Empreendimento'>
+            <Toast onClose={() => setToastShow(false)} show={toastShow} delay={5000} autohide>
+                <Toast.Header className='text-warning'>
+                    <span className="bi bi-lightbulb me-2"></span>
+                    <strong className="me-auto">Sistema Veloz</strong>
+                </Toast.Header>
+                <Toast.Body>{toastText}</Toast.Body>
+            </Toast>
             <Row>
                 <Col lg={4} className='unidades'>
-                    <div className="heading">
-                        <h1>Unidades</h1>
-                        <FilterCabanas cabanas={cabanas} setCabanas={setCabanas} />
-                    </div>
-                    <div className="list-unidades">
-                        {data.empreendimento.cabanas.map(uni => (
-                            <div key={uni.id} className="unidade-card">
-                                <div className="foto">
-                                    <img src={'http://localhost:1337' + uni.foto.formats.thumbnail.url } />
+
+                    {(active) ? (
+                        <div className="selection">
+                            <div className="heading">
+                                <div className='back-button'>
+                                    <span className='bi bi-chevron-left me-1'></span>
+                                    Lista de unidades
                                 </div>
-                                <div className="info">
-                                    <div className='nome'>
-                                        {uni.nome}
-                                    </div>
-                                    <div className="caracter">
-                                        {uni.tamanho}&nbsp;&nbsp;{uni.quartos}
-                                    </div>
-                                    <div className="valor-base">
-                                        {'R$ ' + numberWithCommas(uni.valorBase)}
-                                    </div>
+                                <div className="title mt-3">
+                                    <h2 className='d-flex align-items-center'>
+                                        <CabanaIcon />
+                                        <span className='ms-2'>{active.nome}</span>
+                                    </h2>
                                 </div>
-                                <div className="tag">
-                                    {
-                                    (uni.reservada) ? (
-                                        <span>RESERVADA</span>
-                                    ) : (
-                                        (cycleCotas(uni)) ? (
-                                            <span>DISPONÍVEL</span>
-                                        ) 
-                                        : (
-                                            <span>VENDIDA</span>
-                                        )
-                                    )
-                                    }
+                                <div className="gallery">
+                                    <GalleryCabana id={'galleryCabana' + active.id} images={active.galeria} />
                                 </div>
                             </div>
-                        ))}
-                    </div>
+
+                        </div>
+                    ) : (
+                        <div className="no-selection">
+                            <div className="heading">
+                                <h1>Unidades</h1>
+                                <FilterCabanas cabanas={data.empreendimento.cabanas} setCabanas={setCabanas} />
+                            </div>
+
+                            <ListCabanas cabanas={cabanas} showUnidade={showUnidade} />
+                        </div>
+                    )}
 
                 </Col>
                 <Col lg={8} className='mapa'>

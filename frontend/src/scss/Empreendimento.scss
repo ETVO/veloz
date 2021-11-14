@@ -1,5 +1,12 @@
 .Empreendimento {
     height: 100%;
+
+    .toast {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        margin: 1rem;
+    }
     
     .row {
         height: 100%;
@@ -14,48 +21,12 @@
         flex-flow: column;
         
         .heading {
-            padding: 1rem 1rem 1.25rem;
+            padding: 1.5rem;
             border-bottom: solid 1px #A6ACBD;
         }
 
-        .list-unidades {
+        .ListCabanas {
             flex: 1 1 auto;
-
-            padding-right: 1rem;
-            overflow-y: scroll;
-
-            .unidade-card {
-                border-bottom: solid 1px #E5E7ED;
-                padding: 1rem;
-
-                display: flex;
-
-                .foto {
-                    img {
-                        height: 50px;
-                        width: 50px;
-                        object-fit: cover;
-                        border-radius: 50%;
-                    }
-                }
-
-                .info {
-                    .nome {
-                        font-weight: 600;
-                        color: #051133;
-                    }
-
-                    .caracter {
-                        font-size: .875rem;
-                        color: #4C516F;
-                    }
-
-                    .valor-base {
-                        font-weight: 600;
-                        color: #4C516F;
-                    }
-                }
-            }
         }
     }
 

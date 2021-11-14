@@ -1,0 +1,54 @@
+.GalleryCabana {
+    .carousel {
+        border-radius: 5px;
+        overflow: hidden;
+        .carousel-item {
+            height: 250px;
+            img {
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+    }
+
+    .selectors {
+
+        margin-top: 1rem;
+        // display: flex;
+
+        .selector {
+            cursor: pointer;
+            margin: 0 .5rem;
+            height: 65px;
+            width: 100%;
+            border-radius: 5px;
+            overflow: hidden;
+
+            img {
+                height: 100%;
+                width: 100%;
+                object-fit: cover;
+            }
+
+            &:first-child {
+                margin-left: 0;
+            }
+            &:last-child {
+                margin-right: 0;
+            }
+
+            &.view-more {
+                background-color: #E5E7ED;
+                color: #7f8298;
+                display: flex;
+
+                span {
+                    margin: auto;
+
+                    font-size: 60px;
+                    line-height: 0;
+                }
+            }
+        }
+    }
+}

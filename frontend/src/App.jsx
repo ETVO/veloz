@@ -9,6 +9,7 @@ import { setContext } from '@apollo/client/link/context'
 import Login from './pages/Login'
 import Empreendimentos from './pages/Empreendimentos'
 import Empreendimento from './pages/Empreendimento'
+import Proposta from './pages/Proposta'
 import Header from './components/Header'
 
 // import hooks
@@ -74,6 +75,7 @@ function App() {
 							<Route exact path="/" element={(<Empreendimentos />)}></Route>
 							<Route exact path="/empreendimentos" element={(<Empreendimentos />)}></Route>
 							<Route exact path="/empreendimento/:id" element={(<Empreendimento />)}></Route>
+							<Route exact path="/proposta/:id" element={(<Proposta />)}></Route>
 						</Routes>
 					</div>
 				</ApolloProvider>

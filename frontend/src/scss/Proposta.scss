@@ -1,0 +1,67 @@
+.Proposta {
+
+    height: 100%;
+    display: flex;
+
+    > .row {
+        flex: 1 1 auto;
+        height: 100%;
+    }
+
+    .form-col {
+        padding: 1rem 2rem;
+        
+    
+        .back-button {
+            display: inline;
+            cursor: pointer;
+            color: #7F8298;
+            font-size: .9rem;
+            text-decoration: none;
+        }
+
+    }
+
+    .details-col {
+        padding: 3rem 1.5rem 1rem 2rem;
+        background-color: #E5E7ED;
+        height: 100%;
+
+        > .title {
+            color: #051133;
+            margin-bottom: 1rem;
+        }
+
+        .selected-brief {
+
+            > .title {
+                margin: 0;
+                color: #4C516F;
+                font-size: .9rem;
+            }
+    
+            .cabana-brief {
+                .nome-cabana {
+                    color: #051133;
+                    font-weight: 600;
+                    margin: .25rem 0 0;
+                }
+    
+                .cota-brief {
+                    color: #4C516F;
+                    margin-left: 1rem;
+                    .nome-cota {
+                        font-weight: 600;
+                    }
+                }
+            }
+    
+            .total-price {
+                color: #051133;
+                font-weight: 600;
+                font-size: 1.1rem;
+            }
+        }
+
+    }
+}

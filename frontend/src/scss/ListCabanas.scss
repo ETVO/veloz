@@ -25,11 +25,36 @@
         }
 
         .foto {
+            position: relative;
+            
             img {
                 height: 55px;
                 width: 55px;
                 object-fit: cover;
                 border-radius: 50%;
+            }
+
+            .icon {
+                display: none;
+
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+
+                background-color: rgba(#24C34F, .5);
+
+                span {
+                    color: white;
+                    margin: auto;
+                }
+            }
+
+            &.selected {
+                .icon {
+                    display: flex;
+                }
             }
         }
 

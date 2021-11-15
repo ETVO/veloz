@@ -25,7 +25,7 @@ export default function DadosComprador({ fields, setFields, submit }) {
 
     const handleChange = e => {
         e.preventDefault()
-        let formValues = fields
+        let formValues = JSON.parse(JSON.stringify(fields))
         let { value, id } = e.target
 
         // If there are dots in the input id, use it to 

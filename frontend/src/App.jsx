@@ -60,6 +60,8 @@ function App() {
 		})
 
 		const logOut = e => {
+			sessionStorage.clear()
+			localStorage.clear()
 			setToken(null)
 		}
 		

@@ -65,8 +65,8 @@
                 &.active {
                     &::before {
                         animation-name: slideIn;
-                        animation-duration: 1s;
-                        animation-timing-function: ease-in-out;
+                        animation-duration: .75s;
+                        animation-timing-function: ease;
                         animation-delay: .1s;
                         animation-fill-mode: forwards;
                     }
@@ -132,7 +132,7 @@
             margin-bottom: 1rem;
         }
 
-        .selected-brief {
+        .brief {
 
             > .title {
                 margin: 0;
@@ -140,14 +140,14 @@
                 font-size: .9rem;
             }
     
-            .cabana-brief {
-                .nome-cabana {
+            .brief-section {
+                .brief-title {
                     color: #051133;
                     font-weight: 600;
                     margin: .25rem 0 0;
                 }
     
-                .cota-brief {
+                .brief-section {
                     color: #4C516F;
                     margin-left: 1rem;
                     .nome-cota {

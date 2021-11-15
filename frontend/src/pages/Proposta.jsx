@@ -81,6 +81,11 @@ export default function Proposta() {
     (() => {
         let storedSelected = JSON.parse(sessionStorage.getItem('selectedUnidades'))
         let storedFields = JSON.parse(sessionStorage.getItem('formFields'))
+        let storedStage = JSON.parse(sessionStorage.getItem('formStage'))
+
+        if(activeStage === 0 && storedStage && storedStage.empreendimentoId === id) {
+            setStage(storedStage.activeStage)
+        }
 
         if(fields === initialFields && storedFields && storedFields.empreendimentoId === id) {
             setFields(storedFields.fields)
@@ -128,13 +133,29 @@ export default function Proposta() {
         }
     })()
 
+    const setStageFilter = (newStage) => {
+        if(newStage) {
+            let stageJSON = JSON.stringify({
+                empreendimentoId: id,
+                activeStage: newStage
+            })
+
+            sessionStorage.setItem('formStage', stageJSON)
+            setStage(newStage)
+        }
+        else {
+            sessionStorage.removeItem('formStage')
+            setStage(0)
+        }
+    }
+
     const setFieldsFilter = (newFields) => {
         if(newFields) {
             let fieldsJSON = JSON.stringify({
                 empreendimentoId: id,
                 fields: newFields
             })
-            console.log('newFields', fields)
+
             sessionStorage.setItem('formFields', fieldsJSON)
             setFields(newFields)
         }
@@ -145,7 +166,7 @@ export default function Proposta() {
     }
 
     const submitNext = () => {
-        setStage(activeStage + 1)
+        setStageFilter(activeStage + 1)
     }
 
     const stages = [
@@ -171,12 +192,24 @@ export default function Proposta() {
             navigate('/empreendimento/' + id)
         }
         else {
-            setStage(activeStage - 1)
+            setStageFilter(activeStage - 1)
         }
     }
 
-    if (loading) return <p>Carregando...</p>
-    if (error) return <p>Ocorreu um erro ao carregar a página de Proposta.</p>
+    if(loading) {
+        return (
+            <div className='Proposta d-flex h-100'>
+                <p className='m-auto'>Carregando...</p>
+            </div>
+        ) 
+    }
+    if(error) {
+        return (
+            <div className='Proposta d-flex h-100'>
+                <p className='m-auto'>Ocorreu um erro ao carregar a página de proposta.</p>
+            </div>
+        )
+    }
 
     return (
         <div className='Proposta'>
@@ -224,15 +257,15 @@ export default function Proposta() {
                 <Col lg={4} className='details-col'>
                     <h4 className='title'>Detalhes da Proposta</h4>
                     {(selected !== initialSelected) ? (
-                        <div className="selected-brief">
+                        <div className="brief">
                             <p className='title'>Unidade:</p>
                             {cabanas.map(cabana => {
                                 return (
-                                    <div key={cabana.id} className="cabana-brief my-2">
-                                        <h5 className='nome-cabana'>{cabana.nome}</h5>
+                                    <div key={cabana.id} className="brief-section my-2">
+                                        <h5 className='brief-title'>{cabana.nome}</h5>
                                         {(cabana.cotas.map(cota => {
                                             return (
-                                                <div key={cota.id} className="cota-brief">
+                                                <div key={cota.id} className="brief-section">
                                                     <span className='nome-cota'>{'Cota ' + cota.numero}</span>
                                                     <span className='datas ms-2'>{cota.dataInicio + ' – ' + cota.dataFim}</span>
                                                 </div>
@@ -244,11 +277,32 @@ export default function Proposta() {
                             <span className='total-price'>{'R$ ' + numberWithDots(price)}</span>
                         </div>
                     ) : (
-                        <div className="selected-brief">
+                        <div className="brief">
                             <p>Nenhuma unidade foi selecionada...</p>
                             <Navigate to={'/empreendimento/' + id} />
                         </div>
                     )}
+                    {(activeStage >= 1) ? (
+                        <div className="brief mt-3">
+                            <p className='title muted'>Comprador:</p>
+                            
+                            <div className="brief-section mb-2">
+                                <h5 className='brief-title'>{fields.infoComprador.nomeCompleto}</h5>
+                                <span className=''>{fields.email}</span>
+                            </div>
+                        </div>
+                    ) : (() => {
+                        setStageFilter(0)
+                    })}
+                    {(activeStage >= 1 && fields.estadoCivil === 'Casado') ? (
+                        <div className="brief mt-3">
+                            <p className='title muted'>Cônjuge:</p>
+                            
+                            <div className="brief-section mb-2">
+                                <h5 className='brief-title'>{fields.infoConjuge.nomeCompleto}</h5>
+                            </div>
+                        </div>
+                    ) : ''}
                 </Col>
 
             </Row>

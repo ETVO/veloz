@@ -20,20 +20,21 @@ function Empreendimentos() {
 
     const { loading, error, data } = useQuery(EMPREENDIMENTOS); 
 
+    
+
+
     if(loading) {
         return (
-            <Container className='Empreendimentos mt-5'>
-                <p>Carregando...</p>
-    
-            </Container>
+            <div className='Empreendimentos d-flex h-100'>
+                <p className='m-auto'>Carregando...</p>
+            </div>
         ) 
     }
     if(error) {
         return (
-            <Container className='Empreendimentos mt-5'>
-                <p>Ocorreu um erro ao carregar os empreendimentos.</p>
-    
-            </Container>
+            <div className='Empreendimentos d-flex h-100'>
+                <p className='m-auto'>Ocorreu um erro ao carregar a página de proposta.</p>
+            </div>
         )
     }
 

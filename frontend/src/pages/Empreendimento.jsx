@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Col, Row, Toast, Button } from 'react-bootstrap'
+import { Col, Row, Toast, Button, Container } from 'react-bootstrap'
 import { useParams, Link } from 'react-router-dom'
 import { useQuery, gql } from '@apollo/client'
 import { CabanaIcon, cycleCotas, numberWithDots } from '../helpers/cabanas'
@@ -72,10 +72,6 @@ export default function Empreendimento() {
         }
     }
 
-
-    if (loading) return <p>Carregando...</p>
-    if (error) return <p>Ocorreu um erro ao carregar os empreendimentos.</p>
-
     const showUnidade = uni => {
         let disponivel = cycleCotas(uni)
 
@@ -133,8 +129,22 @@ export default function Empreendimento() {
     const limparClick = e => {
         if(window.confirm('Deseja realmente limpar a sua seleção de cotas?')) {
             setSelectedFilter(null)
-        }
-            
+        }        
+    }
+
+    if(loading) {
+        return (
+            <div className='Empreendimento d-flex h-100'>
+                <p className='m-auto'>Carregando...</p>
+            </div>
+        ) 
+    }
+    if(error) {
+        return (
+            <div className='Empreendimento d-flex h-100'>
+                <p className='m-auto'>Ocorreu um erro ao carregar este empreendimento.</p>
+            </div>
+        )
     }
 
     return (

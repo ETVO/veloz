@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
-import { Row, Col, Container } from 'react-bootstrap'
-import { useParams, Navigate, Link } from 'react-router-dom'
+import { Row, Col, Container, Button } from 'react-bootstrap'
+import { useParams, useNavigate, Navigate, Link } from 'react-router-dom'
 import { useQuery, gql } from '@apollo/client'
 import { numberWithDots } from '../helpers/cabanas'
 
@@ -34,8 +34,39 @@ const initialSelected = {
     cabanas: []
 }
 
+const initialFields = {
+    infoComprador: {
+        nomeCompleto: '',
+        dataNasc: '',
+        nacionalidade: '',
+        profissao: '',
+        cpf: '',
+        rg: '',
+        orgaoExp: '',
+    },
+    estadoCivil: '',
+    regimeCasamento: '',
+    infoConjuge: {
+        nomeCompleto: '',
+        dataNasc: '',
+        nacionalidade: '',
+        profissao: '',
+        cpf: '',
+        rg: '',
+        orgaoExp: '',
+    },
+    endereco: '',
+    bairro: '',
+    cep: '',
+    cidade: '',
+    telefone: '',
+    email: '',
+}
+
 export default function Proposta() {
     const { id } = useParams()
+
+    const navigate = useNavigate()
 
     const { loading, error, data } = useQuery(EMPREENDIMENTO, {
         variables: { id: id }
@@ -44,17 +75,16 @@ export default function Proposta() {
     const [selected, setSelected] = useState(initialSelected)
     const [cabanas, setCabanas] = useState([])
     const [price, setPrice] = useState(0)
-    const [stage, setStage] = useState(0)
-    const [backText, setBackText] = useState('Voltar para o mapa');
-
-    const stages = [
-        <DadosComprador />,
-        <DadosPagamento />,
-        <RevisaoProposta />
-    ]
+    const [activeStage, setStage] = useState(0)
+    const [fields, setFields] = useState(initialFields);
 
     (() => {
         let storedSelected = JSON.parse(sessionStorage.getItem('selectedUnidades'))
+        let storedFields = JSON.parse(sessionStorage.getItem('formFields'))
+
+        if(fields === initialFields && storedFields && storedFields.empreendimentoId === id) {
+            setFields(storedFields.fields)
+        }
         
         if(selected === initialSelected && storedSelected && storedSelected.empreendimentoId === id) {
             setSelected(storedSelected.selected)
@@ -98,6 +128,53 @@ export default function Proposta() {
         }
     })()
 
+    const setFieldsFilter = (newFields) => {
+        if(newFields) {
+            let fieldsJSON = JSON.stringify({
+                empreendimentoId: id,
+                fields: newFields
+            })
+            console.log('newFields', fields)
+            sessionStorage.setItem('formFields', fieldsJSON)
+            setFields(newFields)
+        }
+        else {
+            sessionStorage.removeItem('formFields')
+            setFields(initialFields)
+        }
+    }
+
+    const submitNext = () => {
+        setStage(activeStage + 1)
+    }
+
+    const stages = [
+        <DadosComprador fields={fields} setFields={setFieldsFilter} submit={submitNext} />,
+        <DadosPagamento />,
+        <RevisaoProposta />
+    ]
+    
+    const prevText = [
+        'Voltar para o mapa',
+        'Voltar',
+        'Voltar',
+    ]
+
+    const nextText = [
+        'seguinte',
+        'finalizar proposta',
+        'finalizar e enviar proposta por email',
+    ]
+
+    const backClick = () => {
+        if(activeStage === 0) {
+            navigate('/empreendimento/' + id)
+        }
+        else {
+            setStage(activeStage - 1)
+        }
+    }
+
     if (loading) return <p>Carregando...</p>
     if (error) return <p>Ocorreu um erro ao carregar a página de Proposta.</p>
 
@@ -108,13 +185,38 @@ export default function Proposta() {
 
                 <Col lg={8} className='form-col'>
 
-                    <Link className="back-button" to={'/empreendimento/' + id}>
-                        <span className='bi bi-chevron-left me-1'></span>
-                        Voltar para o mapa
-                    </Link>
+                    <div className="form-inner">
+                        <div className="back-button" onClick={backClick}>
+                            <span className='bi bi-chevron-left me-1'></span>
+                            {prevText[activeStage]}
+                        </div>
 
-                    <div className="stages my-2">
+                        <div className="progress-bars my-3 d-flex justify-content-between">
+                            {stages.map((stage, i) => {
+                                let className = 'stage-bar'
 
+                                if(activeStage === i)
+                                    className += ' active'
+                                else if (activeStage > i)
+                                    className += ' previous'
+
+                                return (
+                                    <div key={'bar' + i} className={className}></div>
+                                )
+                            })}
+                        </div>
+
+                        <div className="stages mt-2 mb-4">
+                            {stages.map((stage, i) => {
+                                if(i === activeStage) {
+                                    return (
+                                        <div key={'stage' + i} className="stage-view">
+                                            {stage}
+                                        </div> 
+                                    )
+                                }
+                            })}
+                        </div>
                     </div>
 
                 </Col>

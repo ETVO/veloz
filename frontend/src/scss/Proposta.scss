@@ -9,8 +9,11 @@
     }
 
     .form-col {
-        padding: 1rem 2rem;
+        padding: 1rem 3rem;
         
+        .form-inner {
+            max-width: 600px;
+        }
     
         .back-button {
             display: inline;
@@ -20,6 +23,103 @@
             text-decoration: none;
         }
 
+        .progress-bars {
+            .stage-bar {
+                display: block;
+                width: 100%;
+                height: 10px;
+                margin: 0 .25rem;
+                background-color: #E5E7ED;
+
+                position: relative;
+                overflow: hidden;
+
+                &:first-child {
+                    margin-left: 0;
+                    border-top-left-radius: 8px;
+                    border-bottom-left-radius: 8px;
+                }
+                
+                &:last-child {
+                    margin-right: 0;
+                    border-top-right-radius: 8px;
+                    border-bottom-right-radius: 8px;
+                }
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    inset: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(90deg, #FFC038 0%, #FF6D13 100%);
+                    left: -100%;
+                }
+
+                &.previous {
+                    &::before {
+                        left: 0;
+                    }
+                }
+
+                &.active {
+                    &::before {
+                        animation-name: slideIn;
+                        animation-duration: 1s;
+                        animation-timing-function: ease-in-out;
+                        animation-delay: .1s;
+                        animation-fill-mode: forwards;
+                    }
+                }
+
+                @keyframes slideIn {
+                    from {
+                        left: -100%;
+                    }
+
+                    to {
+                        left: 0;
+                    }
+                }
+            }
+        }
+
+        .stage-view {
+            padding-top: 1rem;
+            color: #051133;
+
+            .form-section {
+                margin-left: 1rem;
+
+                .section-content {
+                    border-left: solid 3px #E5E7ED;
+                    padding-left: 1rem;
+
+                    .form-section {
+                        margin-left: 0;
+                    }
+                }
+            }
+
+            .form-label {
+                font-weight: 600;
+                font-size: .875rem;
+                margin-bottom: .25rem;
+            }
+
+            .form-control, .form-select {
+                border: solid 1px #B6B6E2;
+                border-radius: 5px;
+
+                &::placeholder {
+                    color: #4C516F;
+                }
+            }
+            
+            .form-row {
+                margin-bottom: .625rem;
+            }
+        }
     }
 
     .details-col {

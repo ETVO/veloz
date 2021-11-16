@@ -108,12 +108,12 @@ export default function DadosComprador({ fields, setFields, submit }) {
                         <Form.Group className="form-row" controlId="estadoCivil">
                             <Form.Label>Estado civil:</Form.Label>
                             <Form.Control onChange={handleChange} as={Form.Select} required defaultValue={fields.estadoCivil}>
-                                <option disabled defaultValue=''>Escolha uma opção</option>
-                                <option defaultValue="Solteiro">Solteiro</option>
-                                <option defaultValue="Casado">Casado</option>
-                                <option defaultValue="Viuvo">Viúvo</option>
-                                <option defaultValue="Separado">Separado</option>
-                                <option defaultValue="Divorciado">Divorciado</option>
+                                <option disabled value=''>Escolha uma opção</option>
+                                <option value="Solteiro">Solteiro</option>
+                                <option value="Casado">Casado</option>
+                                <option value="Viúvo">Viúvo</option>
+                                <option value="Separado">Separado</option>
+                                <option value="Divorciado">Divorciado</option>
                             </Form.Control>
                             <Form.Control.Feedback type="invalid">
                                 {requiredErrorText}
@@ -125,11 +125,11 @@ export default function DadosComprador({ fields, setFields, submit }) {
                                 <Form.Group className="form-row" controlId="regimeCasamento">
                                     <Form.Label>Regime de casamento:</Form.Label>
                                     <Form.Control onChange={handleChange} as={Form.Select} required defaultValue={fields.regimeCasamento}>
-                                        <option disabled defaultValue=''>Escolha uma opção</option>
-                                        <option defaultValue="Total">Comunhão total de bens</option>
-                                        <option defaultValue="Parcial">Comunhão parcial de bens</option>
-                                        <option defaultValue="Separado">Separação de bens</option>
-                                        <option defaultValue="Participacao">Participação final nos aquestos</option>
+                                        <option disabled value=''>Escolha uma opção</option>
+                                        <option value="Comunhão total de bens">Comunhão total de bens</option>
+                                        <option value="Comunhão parcial de bens">Comunhão parcial de bens</option>
+                                        <option value="Separação de bens">Separação de bens</option>
+                                        <option value="Participação final nos aquestos">Participação final nos aquestos</option>
                                     </Form.Control>
                                     <Form.Control.Feedback type="invalid">
                                         {requiredErrorText}

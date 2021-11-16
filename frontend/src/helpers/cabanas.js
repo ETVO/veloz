@@ -17,8 +17,12 @@ export function cycleCotas(cabana) {
 }
 
 // Format number with dots between the thousands 
-export function numberWithDots(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+export function formatNumber(x, isMoney = false) {
+    if(isMoney) x = x.toFixed(2)
+    x = x.toString()
+    x = x.replace('.', ',')
+    x = x.replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+    return x
 }
 
 export function CabanaIcon() {

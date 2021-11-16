@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Row, Col } from 'react-bootstrap'
-import { numberWithDots } from '../helpers/cabanas'
+import { formatNumber } from '../helpers/cabanas'
 
 import '../scss/CotasCabana.scss'
 
@@ -12,7 +12,9 @@ function removeItemOnce(arr, value) {
     return arr;
 }
 
-export default function CotasCabana({cabanaId, cotas, selected, setSelected}) {
+export default function CotasCabana({cabana, selected, setSelected}) {
+
+    let cotas = cabana.cotas
     
     if(!cotas) return (<p>Nenhuma cota foi encontrada.</p>)
 
@@ -20,13 +22,15 @@ export default function CotasCabana({cabanaId, cotas, selected, setSelected}) {
         if(disponivel) {
             let newSelected = JSON.parse(JSON.stringify(selected))
 
-            // get index of cabana element that has id property equal tocabanaId prop value
-            var cabanaIndex = newSelected.cabanas.map(el => el.id).indexOf(cabanaId)
+            // get index of cabana element that has id property equal tocabana.id prop value
+            var cabanaIndex = newSelected.cabanas.map(el => el.id).indexOf(cabana.id)
 
+            // // cabanaProps contains all properties but cotas
+            // const {cotas, ...cabanaProps} = cabana
 
             if(cabanaIndex === -1) { // cabana does not exist in cabanas array yet
                 newSelected.cabanas.push({
-                    id: cabanaId,
+                    id: cabana.id,
                     cotas: [cota]
                 })
             } // cabana element already exists -> let's push this 'cota' in the 'cotas' array of this element
@@ -56,14 +60,14 @@ export default function CotasCabana({cabanaId, cotas, selected, setSelected}) {
 
                     // view changeSelect function of this component for explanation comments
                     let newSelected = JSON.parse(JSON.stringify(selected))
-                    var cabanaIndex = newSelected.cabanas.map(el => el.id).indexOf(cabanaId)
+                    var cabanaIndex = newSelected.cabanas.map(el => el.id).indexOf(cabana.id)
 
                     
                     if(!cota.disponivel) {
                         cotaClassName += ' sold-out'
                     }
 
-                    // if index is diff than -1, cabanaId is in the cabana array of the selectedCotas array
+                    // if index is diff than -1, cabana.id is in the cabana array of the selectedCotas array
                     if(cabanaIndex !== -1) {
                         var cotaIndex = newSelected.cabanas[cabanaIndex].cotas.map(c => c.id).indexOf(cota.id)
                         
@@ -83,7 +87,7 @@ export default function CotasCabana({cabanaId, cotas, selected, setSelected}) {
                 
                     return (
                         <Col sm={3} key={cota.id} className="cota-option-wrap" onClick={() => changeSelect(cota.disponivel, cota)}>
-                            <div className={cotaClassName} title={'R$ ' + numberWithDots(cota.valor)}>
+                            <div className={cotaClassName} title={'R$ ' + formatNumber(cota.valor)}>
                                 <div className="sold-out-text">
                                     <span>VENDIDA</span>
                                 </div>

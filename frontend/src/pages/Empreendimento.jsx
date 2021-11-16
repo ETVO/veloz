@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Col, Row, Toast, Button, Container } from 'react-bootstrap'
 import { useParams, Link } from 'react-router-dom'
 import { useQuery, gql } from '@apollo/client'
-import { CabanaIcon, cycleCotas, numberWithDots } from '../helpers/cabanas'
+import { CabanaIcon, cycleCotas, formatNumber } from '../helpers/cabanas'
 
 import '../scss/Empreendimento.scss'
 
@@ -182,7 +182,7 @@ export default function Empreendimento() {
                                 <div className="cotas-title">
                                     <h6>Cotas</h6>
                                 </div>
-                                <CotasCabana cabanaId={active.id} cotas={active.cotas} selected={selected} setSelected={setSelectedFilter} />
+                                <CotasCabana cabana={active} selected={selected} setSelected={setSelectedFilter} />
                             </div>
 
                         </div>
@@ -205,7 +205,7 @@ export default function Empreendimento() {
 
                     <div className={'overview d-flex justify-content-between' + ((totalPrice() === 0) ? ' disabled' : '')}>
                         <div className="price">
-                            {'R$ ' + numberWithDots(totalPrice())}
+                            {'R$ ' + formatNumber(totalPrice())}
                         </div>
                         <div className="action">
                             <Link className='btn btn-primary' to={'/proposta/' + data.empreendimento.id}>

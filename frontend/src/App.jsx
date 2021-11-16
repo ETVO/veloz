@@ -77,7 +77,7 @@ function App() {
 							<Route exact path="/" element={(<Empreendimentos />)}></Route>
 							<Route exact path="/empreendimentos" element={(<Empreendimentos />)}></Route>
 							<Route exact path="/empreendimento/:id" element={(<Empreendimento />)}></Route>
-							<Route exact path="/proposta/:id" element={(<Proposta />)}></Route>
+							<Route exact path="/proposta/:id" element={(<Proposta  user={ token.user } />)}></Route>
 						</Routes>
 					</div>
 				</ApolloProvider>

@@ -101,6 +101,35 @@
                 }
             }
 
+            .review-section {
+                margin-left: 1rem;
+                width: 450px;
+
+                .field-row {
+                    display: flex;
+                    > * {
+                        margin-right: 2.25rem;
+                    }
+                }
+
+                .field-view {
+                    margin-bottom: .75rem;
+                    
+                    small {
+                        font-size: .875rem;
+                        margin-bottom: .25rem;
+                        color: #4C516F;
+                    }
+
+                    p {
+                        margin-top: -.25rem;
+                        margin-bottom: 0;
+                        font-weight: 600;
+                        color: #051133;
+                    }
+                }
+            }
+
             .form-label {
                 font-weight: 600;
                 font-size: .875rem;

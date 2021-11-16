@@ -12,27 +12,6 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "regimeCasamento": {
-      "type": "enumeration",
-      "enum": [
-        "Total",
-        "Parcial",
-        "Separado",
-        "Participacao"
-      ],
-      "required": false
-    },
-    "estadoCivil": {
-      "type": "enumeration",
-      "enum": [
-        "Solteiro",
-        "Casado",
-        "Viuvo",
-        "Separado",
-        "Divorciado"
-      ],
-      "required": true
-    },
     "endereco": {
       "type": "string",
       "required": true
@@ -77,6 +56,22 @@
     },
     "unidades": {
       "type": "json"
+    },
+    "pagamento": {
+      "type": "component",
+      "repeatable": false,
+      "component": "proposta.pagamento"
+    },
+    "vendedor": {
+      "plugin": "users-permissions",
+      "model": "user"
+    },
+    "estadoCivil": {
+      "type": "string",
+      "required": true
+    },
+    "regimeCasamento": {
+      "type": "string"
     }
   }
 }

@@ -11,10 +11,6 @@
       "type": "string",
       "required": true
     },
-    "dataNasc": {
-      "type": "date",
-      "required": true
-    },
     "nacionalidade": {
       "type": "string",
       "required": true
@@ -25,8 +21,7 @@
     },
     "cpf": {
       "type": "string",
-      "required": true,
-      "regex": "/^[0-9]{3}.?[0-9]{3}.?[0-9]{3}-?[0-9]{2}/"
+      "required": true
     },
     "rg": {
       "type": "string",
@@ -35,6 +30,9 @@
     "orgaoExp": {
       "type": "string",
       "required": true
+    },
+    "dataNasc": {
+      "type": "string"
     }
   }
 }

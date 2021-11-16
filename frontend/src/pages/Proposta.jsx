@@ -2,7 +2,8 @@ import React, {useState} from 'react'
 import { Row, Col, Container, Button } from 'react-bootstrap'
 import { useParams, useNavigate, Navigate, Link } from 'react-router-dom'
 import { useQuery, gql } from '@apollo/client'
-import { numberWithDots } from '../helpers/cabanas'
+import { formatNumber } from '../helpers/cabanas'
+import { enviarProposta } from '../helpers/enviarProposta'
 
 import '../scss/Proposta.scss'
 
@@ -34,6 +35,19 @@ const initialSelected = {
     cabanas: []
 }
 
+const initialUnidades = {
+    cabanas: []
+}
+
+const initialPaymentFields = {
+    valorProposta: 0,
+    entrada: 0,
+    nParcelas: 1,
+    valorParcela: 0,    
+    valorFinal: 0,
+    meioPagamento: 'transferencia_pix'
+}
+
 const initialFields = {
     infoComprador: {
         nomeCompleto: '',
@@ -61,9 +75,13 @@ const initialFields = {
     cidade: '',
     telefone: '',
     email: '',
+    pagamento: initialPaymentFields,
+    vendedor: 0,
+    empreendimento: 0,
+    unidades: []
 }
 
-export default function Proposta() {
+export default function Proposta({user}) {
     const { id } = useParams()
 
     const navigate = useNavigate()
@@ -73,8 +91,6 @@ export default function Proposta() {
     })
 
     const [selected, setSelected] = useState(initialSelected)
-    const [cabanas, setCabanas] = useState([])
-    const [price, setPrice] = useState(0)
     const [activeStage, setStage] = useState(0)
     const [fields, setFields] = useState(initialFields);
 
@@ -88,17 +104,37 @@ export default function Proposta() {
         }
 
         if(fields === initialFields && storedFields && storedFields.empreendimentoId === id) {
+            if(storedFields.fields.vendedor === 0) {
+                storedFields.fields.vendedor = user.id
+            }
+            if(storedFields.fields.empreendimento === 0) {
+                storedFields.fields.empreendimento = id
+            }
             setFields(storedFields.fields)
+        }
+        else {
+            if(fields.vendedor === 0) {
+                let newFields = JSON.parse(JSON.stringify(fields))
+                newFields.vendedor = user.id
+
+                setFields(newFields)
+            }
+            if(fields.empreendimento === 0) {
+                let newFields = JSON.parse(JSON.stringify(fields))
+                newFields.empreendimento = parseInt(id)
+
+                setFields(newFields)
+            }
         }
         
         if(selected === initialSelected && storedSelected && storedSelected.empreendimentoId === id) {
             setSelected(storedSelected.selected)
         }
     
-        if(data && cabanas.length === 0 && selected !== initialSelected) {
+        if(data && fields.unidades.length === 0 && selected !== initialSelected) {
             
             let newCabanas = []
-            let newPrice = 0
+            let valorProposta = 0.00
             data.empreendimento.cabanas.map(cabana => {
                 let newCotas = []
     
@@ -107,11 +143,18 @@ export default function Proposta() {
                 const isSelected = cabanaIndex !== -1
                 
                 if(isSelected) {
-                    newCotas = cabana.cotas.filter(cota => {
+                    cabana.cotas.filter(cota => {
                         let isCotaSelected = selected.cabanas[cabanaIndex].cotas.map(c => c.id).indexOf(cota.id) !== -1
     
-                        if(isCotaSelected)
-                            newPrice += cota.valor
+                        if(isCotaSelected) {
+                            const {__typename, ...other} = cota
+                        
+                            newCotas.push({
+                                ...other
+                            })
+                            
+                            valorProposta += parseFloat(cota.valor)
+                        }
                         
                         return isCotaSelected
                     })
@@ -127,8 +170,11 @@ export default function Proposta() {
                 return isSelected
             })
             
-            setPrice(newPrice)
-            setCabanas(newCabanas)
+            let newFields = JSON.parse(JSON.stringify(fields))
+            newFields.pagamento.valorProposta = valorProposta
+            newFields.unidades = newCabanas
+            console.log(newFields)
+            setFields(newFields)
     
         }
     })()
@@ -165,14 +211,46 @@ export default function Proposta() {
         }
     }
 
+    const setPaymentFields = (paymentFields) => {
+        if(paymentFields) {
+            let newFields = JSON.parse(JSON.stringify(fields))
+            newFields.pagamento = paymentFields;
+
+            let fieldsJSON = JSON.stringify({
+                empreendimentoId: id,
+                fields: newFields
+            })
+
+            sessionStorage.setItem('formFields', fieldsJSON)
+            setFields(newFields)
+        }
+        else {
+            let newFields = JSON.parse(JSON.stringify(fields))
+            newFields.pagamento = initialPaymentFields
+
+            let fieldsJSON = JSON.stringify({
+                empreendimentoId: id,
+                fields: newFields
+            })
+
+            sessionStorage.setItem('formFields', fieldsJSON)
+            setFields(newFields)
+        }
+    }
+
     const submitNext = () => {
-        setStageFilter(activeStage + 1)
+        if(activeStage === 2){
+            enviarProposta(fields)
+        }
+        else {
+            setStageFilter(activeStage + 1)
+        }
     }
 
     const stages = [
         <DadosComprador fields={fields} setFields={setFieldsFilter} submit={submitNext} />,
-        <DadosPagamento />,
-        <RevisaoProposta />
+        <DadosPagamento paymentFields={fields.pagamento} setPaymentFields={setPaymentFields} submit={submitNext} />,
+        <RevisaoProposta fields={fields} submit={submitNext} />
     ]
     
     const prevText = [
@@ -214,6 +292,7 @@ export default function Proposta() {
     return (
         <div className='Proposta'>
 
+
             <Row className='w-100 m-0'>
 
                 <Col lg={8} className='form-col'>
@@ -254,12 +333,12 @@ export default function Proposta() {
 
                 </Col>
 
-                <Col lg={4} className='details-col'>
+                <Col lg={4} className={'details-col' + ((activeStage === 2) ? ' d-none' : '')}>
                     <h4 className='title'>Detalhes da Proposta</h4>
                     {(selected !== initialSelected) ? (
                         <div className="brief">
                             <p className='title'>Unidade:</p>
-                            {cabanas.map(cabana => {
+                            {fields.unidades.map(cabana => {
                                 return (
                                     <div key={cabana.id} className="brief-section my-2">
                                         <h5 className='brief-title'>{cabana.nome}</h5>
@@ -274,7 +353,7 @@ export default function Proposta() {
                                     </div>
                                 )
                             })}
-                            <span className='total-price'>{'R$ ' + numberWithDots(price)}</span>
+                            <span className='total-price'>{'R$ ' + formatNumber(fields.pagamento.valorProposta)}</span>
                         </div>
                     ) : (
                         <div className="brief">
@@ -291,9 +370,9 @@ export default function Proposta() {
                                 <span className=''>{fields.email}</span>
                             </div>
                         </div>
-                    ) : (() => {
-                        setStageFilter(0)
-                    })}
+                    ) : (
+                        <p onLoad={() => setStageFilter(1)}></p>
+                    )}
                     {(activeStage >= 1 && fields.estadoCivil === 'Casado') ? (
                         <div className="brief mt-3">
                             <p className='title muted'>Cônjuge:</p>

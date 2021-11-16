@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { cycleCotas, numberWithDots } from '../helpers/cabanas'
+import { cycleCotas, formatNumber } from '../helpers/cabanas'
 
 import '../scss/ListCabanas.scss'
 
@@ -29,7 +29,7 @@ export default function ListCabanas({selected, cabanas, showUnidade}) {
                                 {uni.tamanho}&nbsp;&nbsp;{uni.quartos}
                             </div>
                             <div className="valor-base">
-                                {'R$ ' + numberWithDots(uni.valorBase)}
+                                {'R$ ' + formatNumber(uni.valorBase)}
                             </div>
                         </div>
                         <div className="tag">

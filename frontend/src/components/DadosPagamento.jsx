@@ -1,16 +1,12 @@
 import React, { useState } from 'react'
 import { Form, Col, Row, Button } from 'react-bootstrap'
-import { numberWithDots } from '../helpers/cabanas';
+import { formatNumber } from '../helpers/cabanas';
+import { calcParcela } from '../helpers/enviarProposta';
 
-export default function DadosPagamento({ submit }) {
+
+export default function DadosPagamento({ paymentFields, setPaymentFields, submit }) {
 
     const [validated, setValidated] = useState(false);
-    const [paymentFields, setPaymentFields] = useState({
-        valorFinal: 105000,
-        entrada: null,
-        nParcelas: null,
-        valorParcela: 0
-    });
 
     const handleSubmit = e => {
         const form = e.currentTarget;
@@ -44,25 +40,32 @@ export default function DadosPagamento({ submit }) {
         }
         // Else, just assign it normally
         else {
+            if(id === 'entrada') {
+                if(value === '')
+                    value = 0
+                else 
+                    value = parseFloat(value)
+            }
+            if(id === 'nParcelas') {
+                if(value === '')
+                    value = 0
+                else 
+                    value = parseInt(value)
+            }
+            
             formValues[id] = value;
         }
 
         setPaymentFields(formValues)
     }
 
-    const calcParcela = () => {
-        // =IF(C7=0;C3; PMT(C4;C7;(-C3+C6);;0))
+    const getValorParcela = () => {
 
-        let P = parseFloat(paymentFields.valorFinal)
-        const r = .9; // taxa de juros a.m. 
+        let P = parseFloat(paymentFields.valorProposta)
         const n = parseInt(paymentFields.nParcelas)
-        const PV = - P + parseFloat(paymentFields.entrada)
+        const e = parseFloat(paymentFields.entrada)
         
-        if(n > 0) {
-            P = (r * (PV)) / (1 - (1 + r)^(-n))
-        }
-
-        return P
+        return calcParcela(P, n, e)
     }
 
     const requiredErrorText = 'Campo obrigatório.'
@@ -77,11 +80,23 @@ export default function DadosPagamento({ submit }) {
                         <h5>Pagamento</h5>
                     </div>
                     <div className="section-content">
-                        <Form.Group className="form-row" controlId="valorFinal">
+                        <Form.Group className="form-row" controlId="valorProposta">
                             <Form.Label>Valor final da proposta:</Form.Label>
                             <Form.Control
                                 type="text"
-                                value={'R$ ' + numberWithDots(paymentFields.valorFinal)}
+                                value={'R$ ' + formatNumber(paymentFields.valorProposta, true)}
+                                disabled
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {requiredErrorText}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+
+                        <Form.Group className="form-row" controlId="meioPagamento">
+                            <Form.Label>Meio de pagamento:</Form.Label>
+                            <Form.Control
+                                type="text"
+                                value={'Transferência / PIX'}
                                 disabled
                             />
                             <Form.Control.Feedback type="invalid">
@@ -118,11 +133,10 @@ export default function DadosPagamento({ submit }) {
                         </Form.Group>
 
                         <Form.Group className="form-row" controlId="valorParcelas">
-                            <Form.Label>Valor da parcela (R$):</Form.Label>
+                            <Form.Label>Valor da parcela:</Form.Label>
                             <Form.Control
-                                type="number"
-                                min={0}
-                                value={ 'R$ ' + numberWithDots(calcParcela().toStrin ) }
+                                type="text"
+                                value={ 'R$ ' + formatNumber(getValorParcela(), true) }
                                 disabled
                             />
                             <Form.Control.Feedback type="invalid">
@@ -131,6 +145,10 @@ export default function DadosPagamento({ submit }) {
                         </Form.Group>
                     </div>
                 </div>
+                <Button className='ms-auto d-flex' type="submit">
+                    <span className='my-auto'>finalizar proposta</span>
+                    <span className='my-auto ms-1 bi bi-chevron-right'></span>
+                </Button>
             </Form>
         </div>
     )

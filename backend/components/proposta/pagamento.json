@@ -1,0 +1,36 @@
+{
+  "collectionName": "components_proposta_pagamentos",
+  "info": {
+    "name": "pagamento",
+    "icon": "money-check-alt",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "valorProposta": {
+      "type": "decimal",
+      "required": true
+    },
+    "valorFinal": {
+      "type": "decimal",
+      "required": true
+    },
+    "valorParcela": {
+      "type": "decimal",
+      "required": true
+    },
+    "nParcelas": {
+      "type": "integer",
+      "required": true
+    },
+    "entrada": {
+      "type": "decimal",
+      "required": false
+    },
+    "meioPagamento": {
+      "type": "string",
+      "default": "Transferência / PIX",
+      "required": true
+    }
+  }
+}

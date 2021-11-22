@@ -3,6 +3,8 @@ import { Carousel } from 'react-bootstrap'
 
 import '../scss/GalleryCabana.scss'
 
+const API_URL = process.env.REACT_APP_API_URL
+
 export default function GalleryCabana({ id, images }) {
     if (!id)
         id = 'galleryCabana' + Math.random()
@@ -21,7 +23,7 @@ export default function GalleryCabana({ id, images }) {
                     <Carousel.Item key={image.id}>
                         <img
                             className="d-block w-100"
-                            src={'http://localhost:1337' + image.url}
+                            src={API_URL + image.url}
                             alt={image.caption}
                         />
                     </Carousel.Item>
@@ -43,7 +45,7 @@ export default function GalleryCabana({ id, images }) {
                         <div className='selector' key={'sel' + image.id} onClick={() => changeSelect(i)}>
                             <img
                                 className="d-block w-100"
-                                src={'http://localhost:1337' + image.url}
+                                src={API_URL + image.url}
                                 alt={image.caption}
                             />
                         </div>

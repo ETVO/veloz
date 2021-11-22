@@ -18,6 +18,7 @@ import useToken from './hooks/useToken'
 // import styling
 import './scss/App.scss'
 
+const API_URL = process.env.REACT_APP_API_URL
 
 function App() {
 
@@ -39,7 +40,7 @@ function App() {
 
 		// Create httpLink
 		const httpLink = new HttpLink({
-			uri: 'http://localhost:1337/graphql',
+			uri: API_URL + '/graphql',
 		})
 	
 		// Create authLink with Bearer Token
@@ -55,7 +56,6 @@ function App() {
 		// Create ApolloClient using the authLink along with the base httpLink
 		const authClient = new ApolloClient({
 			link: authLink.concat(httpLink),
-			uri: 'http://localhost:1337/graphql',
 			cache: new InMemoryCache()
 		})
 

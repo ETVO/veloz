@@ -15,8 +15,10 @@ const LOGIN = gql`
     }
 `
 
+const API_URL = process.env.REACT_APP_API_URL
+
 async function loginUser(credentials) {
-    const response = await fetch('http://localhost:1337/auth/local', {
+    const response = await fetch(API_URL + '/auth/local', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -34,7 +36,7 @@ async function loginUser(credentials) {
 }
 
 async function getLoginCover() {
-    const response = await fetch('http://localhost:1337/estaticas')
+    const response = await fetch(API_URL + '/estaticas')
 
     const data = await response.json()
 
@@ -86,7 +88,7 @@ function Login({ setToken }) {
         <div className="Login">
             <Row className='p-0 w-100'>
                 <Col lg='8' className="present p-0">
-                    <img className='cover-img d-block' src={'http://localhost:1337' + image} alt="" />
+                    <img className='cover-img d-block' src={API_URL + image} alt="" />
                 </Col>
 
                 <Col lg='4' className="form d-flex p-0">

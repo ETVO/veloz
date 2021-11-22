@@ -16,6 +16,8 @@ const EMPREENDIMENTOS = gql`
     }
 `
 
+const API_URL = process.env.REACT_APP_API_URL
+
 function Empreendimentos() {
 
     const { loading, error, data } = useQuery(EMPREENDIMENTOS); 
@@ -47,11 +49,11 @@ function Empreendimentos() {
             {data.empreendimentos.map(emp => (
                 <Link key={emp.id} to={'/empreendimento/' + emp.id}>
                     <div className='emp-card'>
-                        <img className='cover' src={'http://localhost:1337' + emp.cover.url} />
+                        <img className='cover' src={API_URL + emp.cover.url} />
 
                         <div className="overlay">
                             <div className="logo">
-                                <img src={'http://localhost:1337' + emp.logo.url} alt="" />
+                                <img src={API_URL + emp.logo.url} alt="" />
                             </div>
                             <div className="button">
                                 <Button className='d-flex'>

@@ -5,8 +5,10 @@ import { Navbar, Button } from 'react-bootstrap'
 // styling
 import '../scss/Header.scss'
 
+const API_URL = process.env.REACT_APP_API_URL
+
 async function getHeaderLogo() {
-    const response = await fetch('http://localhost:1337/estaticas')
+    const response = await fetch(API_URL + '/estaticas')
 
     const data = await response.json()
 
@@ -30,7 +32,7 @@ export default function Header({logOut, user}) {
         <Navbar className='Header px-4 py-1 text-light'>
             <Navbar.Brand>
                 <Link to='/'>
-                    <img src={'http://localhost:1337' + logo} alt="" />
+                    <img src={API_URL + logo} alt="" />
                 </Link>
             </Navbar.Brand>
             <Navbar.Toggle />
@@ -39,7 +41,7 @@ export default function Header({logOut, user}) {
                     <span className='name'>
                         {user.fullname}
                     </span>
-                    <img className='photo d-block' src={'http://localhost:1337' + user.photo.url} alt="" />
+                    <img className='photo d-block' src={API_URL + user.photo.url} alt="" />
                 </div>
                 <Button className="log-out" onClick={ logOut }>
                     <span>

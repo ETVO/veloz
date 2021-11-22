@@ -4,6 +4,8 @@ import { cycleCotas, formatNumber } from '../helpers/cabanas'
 
 import '../scss/ListCabanas.scss'
 
+const API_URL = process.env.REACT_APP_API_URL
+
 export default function ListCabanas({selected, cabanas, showUnidade}) {
     return (
         <div className="ListCabanas">
@@ -16,7 +18,7 @@ export default function ListCabanas({selected, cabanas, showUnidade}) {
 
                     <div key={uni.id} className={'unidade-card' + ((uni.reservada || !disponivel) ? ' muted' : '')} onClick={() => showUnidade(uni)}>
                         <div className={'foto' + ((selecionada) ? ' selected' : '')}>
-                            <img src={'http://localhost:1337' + uni.foto.formats.thumbnail.url} />
+                            <img src={API_URL + uni.foto.formats.thumbnail.url} />
                             <div className="icon">
                                 <span className='bi bi-check-lg'></span>
                             </div>

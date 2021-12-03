@@ -40,7 +40,7 @@ async function getLoginCover() {
 
     const data = await response.json()
 
-    if(data.statusCode === 400){
+    if(data.success === false){
         return null
     }  
 
